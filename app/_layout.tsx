@@ -8,6 +8,7 @@ import { useFonts } from "expo-font";
 import { SplashScreen, Stack } from "expo-router";
 import { useEffect } from "react";
 import { useColorScheme } from "react-native";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 
 export {
   // Catch any errors thrown by the Layout component.
@@ -44,18 +45,21 @@ const RootLayout = () => {
   }
 
   return <RootLayoutNav />;
-}
+};
 
 function RootLayoutNav() {
+  const queryClient = new QueryClient();
   const colorScheme = useColorScheme();
 
   return (
-    <ThemeProvider value={colorScheme === "dark" ? DarkTheme : DefaultTheme}>
-      <Stack>
-        <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-        <Stack.Screen name="modal" options={{ presentation: "modal" }} />
-      </Stack>
-    </ThemeProvider>
+    <QueryClientProvider client={queryClient}>
+      <ThemeProvider value={colorScheme === "dark" ? DarkTheme : DefaultTheme}>
+        <Stack>
+          <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+          <Stack.Screen name="modal" options={{ presentation: "modal" }} />
+        </Stack>
+      </ThemeProvider>
+    </QueryClientProvider>
   );
 }
 

@@ -1,8 +1,16 @@
 import { StyleSheet } from "react-native";
 
 import { Text, View } from "../../components/Themed";
+import { useQuery } from "@tanstack/react-query";
+import { getAllCountries } from "../../services/countries";
 
 const Index = () => {
+  const { data } = useQuery({
+    queryKey: ["all_countries"],
+    queryFn: getAllCountries,
+  });
+  console.log(data?.map((c) => c.flag));
+
   return (
     <View style={styles.container}>
       <View>
