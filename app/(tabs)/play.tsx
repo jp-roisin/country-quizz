@@ -2,11 +2,11 @@ import { StyleSheet } from "react-native";
 
 import { Text, View } from "../../components/Themed";
 
-const Index = () => {
+const Play = () => {
   return (
     <View style={styles.container}>
       <View>
-        <Text>Explore content</Text>
+        <Text>Play content</Text>
       </View>
     </View>
   );
@@ -21,4 +21,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default Index;
+export default Play;
