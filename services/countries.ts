@@ -1,6 +1,6 @@
 import axios from "axios";
 
-type AllCountries = {
+export type Country = {
   name: {
     common: string;
   };
@@ -19,7 +19,7 @@ type AllCountries = {
   };
 };
 
-export const getAllCountries = async (): Promise<AllCountries[]> => {
+export const getAllCountries = async (): Promise<Country[]> => {
   const response = await axios.get("https://restcountries.com/v3.1/all");
   return response.data;
 };

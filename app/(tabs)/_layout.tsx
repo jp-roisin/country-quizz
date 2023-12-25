@@ -27,7 +27,7 @@ export default function TabLayout() {
         name="index"
         options={{
           title: "Explore",
-          tabBarIcon: ({ color }) => <TabBarIcon name="book" color={color} />,
+          tabBarIcon: ({ color }) => <TabBarIcon name="globe" color={color} />,
           headerRight: () => (
             <Link href="./modal" asChild>
               <Pressable>
@@ -49,7 +49,7 @@ export default function TabLayout() {
         options={{
           title: "Play",
           tabBarIcon: ({ color }) => (
-            <TabBarIcon name="play" color={color} />
+            <TabBarIcon name="gamepad" color={color} />
           ),
         }}
       />
