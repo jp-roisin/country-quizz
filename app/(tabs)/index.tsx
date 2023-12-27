@@ -3,7 +3,7 @@ import { Image, StyleSheet, Dimensions, FlatList } from "react-native";
 
 import { Text, View } from "../../components/Themed";
 import { useQuery } from "@tanstack/react-query";
-import { getAllCountries } from "../../services/countries";
+import { getFlagList } from "../../services/countries";
 
 const screenWidth = Dimensions.get("window").width;
 
@@ -13,8 +13,8 @@ type RenderItemProps = {
 
 const Index = () => {
   const { data, isLoading, isError } = useQuery({
-    queryKey: ["all_countries"],
-    queryFn: getAllCountries,
+    queryKey: ["FLAG_LIST"],
+    queryFn: getFlagList,
   });
 
   const countryList = useMemo(
