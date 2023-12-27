@@ -6,5 +6,8 @@ module.exports = function (api) {
       // Required for expo-router
       'expo-router/babel',
     ],
+    production: {
+      plugins: ['react-native-paper/babel'],
+    },
   };
 };
