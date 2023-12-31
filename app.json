@@ -1,7 +1,7 @@
 {
   "expo": {
     "name": "country-mobile",
-    "slug": "country-mobile",
+    "slug": "country-quizz",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
@@ -36,6 +36,15 @@
     ],
     "experiments": {
       "typedRoutes": true
-    }
+    },
+    "extra": {
+      "router": {
+        "origin": false
+      },
+      "eas": {
+        "projectId": "a1677098-88d4-4adf-ac8c-e16d551d7668"
+      }
+    },
+    "owner": "jp-roisin"
   }
 }
