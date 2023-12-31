@@ -1,9 +1,10 @@
-import { useMemo } from "react";
+import { useMemo, useState } from "react";
 import { Image, StyleSheet, Dimensions, FlatList } from "react-native";
 
 import { Text, View } from "../../components/Themed";
 import { useQuery } from "@tanstack/react-query";
 import { getFlagList } from "../../services/countries";
+import Filters from "../../components/Filters";
 
 const screenWidth = Dimensions.get("window").width;
 
@@ -12,6 +13,11 @@ type RenderItemProps = {
 };
 
 const Index = () => {
+  const [areFiltersOpen, setAreFiltersOpen] = useState(false);
+  const [nameFilter, setNameFilter] = useState("");
+
+  const handleFilters = () => setAreFiltersOpen((prev) => !prev);
+
   const { data, isLoading, isError } = useQuery({
     queryKey: ["FLAG_LIST"],
     queryFn: getFlagList,
@@ -20,13 +26,15 @@ const Index = () => {
   const countryList = useMemo(
     () =>
       data
-        ? data.sort((a, b) => {
-            if (a.name.common > b.name.common) return 1;
-            if (a.name.common < b.name.common) return -1;
-            return 0;
-          })
+        ? data
+            .sort((a, b) => {
+              if (a.name.common > b.name.common) return 1;
+              if (a.name.common < b.name.common) return -1;
+              return 0;
+            })
+            .filter((country) => country.name.common.includes(nameFilter))
         : [],
-    [data],
+    [data, nameFilter],
   );
 
   const renderItem = ({ png }: RenderItemProps) => (
@@ -39,6 +47,12 @@ const Index = () => {
     <View
       style={[isLoading || isError ? styles.containerStatus : styles.container]}
     >
+      <Filters
+        areFiltersOpen={areFiltersOpen}
+        onPress={() => handleFilters()}
+        nameFilter={nameFilter}
+        setNameFilter={(name) => setNameFilter(name)}
+      />
       {isLoading && <Text style={styles.statusMessage}>{"Loading..."}</Text>}
       {isError && (
         <Text style={styles.statusMessage}>{"Something went wrong"}</Text>
