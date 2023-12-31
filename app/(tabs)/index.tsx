@@ -3,7 +3,7 @@ import { Image, StyleSheet, Dimensions, FlatList } from "react-native";
 
 import { Text, View } from "../../components/Themed";
 import { useQuery } from "@tanstack/react-query";
-import { getFlagList } from "../../services/countries";
+import { getCountryList, RegionOrWorldwide } from "../../services/countries";
 import Filters from "../../components/Filters";
 
 const screenWidth = Dimensions.get("window").width;
@@ -15,12 +15,14 @@ type RenderItemProps = {
 const Index = () => {
   const [areFiltersOpen, setAreFiltersOpen] = useState(false);
   const [nameFilter, setNameFilter] = useState("");
+  const [regionFilter, setRegionFilter] =
+    useState<RegionOrWorldwide>("WORLDWIDE");
 
   const handleFilters = () => setAreFiltersOpen((prev) => !prev);
 
   const { data, isLoading, isError } = useQuery({
-    queryKey: ["FLAG_LIST"],
-    queryFn: getFlagList,
+    queryKey: ["COUNTRY_LIST"],
+    queryFn: getCountryList,
   });
 
   const countryList = useMemo(
@@ -32,9 +34,12 @@ const Index = () => {
               if (a.name.common < b.name.common) return -1;
               return 0;
             })
-            .filter((country) => country.name.common.includes(nameFilter))
+            .filter((c) => c.name.common.includes(nameFilter))
+            .filter((c) =>
+              regionFilter === "WORLDWIDE" ? true : c.region === regionFilter,
+            )
         : [],
-    [data, nameFilter],
+    [data, nameFilter, regionFilter],
   );
 
   const renderItem = ({ png }: RenderItemProps) => (
@@ -52,6 +57,8 @@ const Index = () => {
         onPress={() => handleFilters()}
         nameFilter={nameFilter}
         setNameFilter={(name) => setNameFilter(name)}
+        regionFilter={regionFilter}
+        setRegionFilter={(region) => setRegionFilter(region)}
       />
       {isLoading && <Text style={styles.statusMessage}>{"Loading..."}</Text>}
       {isError && (

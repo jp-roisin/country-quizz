@@ -1,10 +1,21 @@
 import axios from "axios";
 
+export const regions = [
+  "Africa",
+  "Americas",
+  "Asia",
+  "Europe",
+  "Oceania",
+] as const;
+
+export type Region = (typeof regions)[number];
+export type RegionOrWorldwide = Region | "WORLDWIDE";
+
 export type Country = {
   name: {
     common: string;
   };
-  region: string;
+  region: Region;
   cca2: string;
   subregion: string;
   capital: string[];
@@ -19,11 +30,11 @@ export type Country = {
   };
 };
 
-export const getFlagList = async (): Promise<
-  Pick<Country, "name" | "cca2" | "flags">[]
+export const getCountryList = async (): Promise<
+  Pick<Country, "name" | "cca2" | "flags" | "region">[]
 > => {
   const response = await axios.get(
-    "https://restcountries.com/v3.1/all?fields=name,cca2,flags",
+    "https://restcountries.com/v3.1/all?fields=name,cca2,flags,region",
   );
 
   return response.data;
