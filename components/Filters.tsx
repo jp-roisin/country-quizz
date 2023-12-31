@@ -62,14 +62,16 @@ const Filters = ({
       </View>
       {areFiltersOpen && (
         <View style={styles.body}>
-          <Text style={styles.title}>Filters</Text>
-          <Searchbar
-            placeholder="Filter by coyntry name"
-            style={styles.searchbar}
-            onChangeText={setNameFilter}
-            value={nameFilter}
-          />
-          <View style={styles.regionContainer}>
+          <View style={styles.section}>
+            <Text style={styles.title}>Filter by name</Text>
+            <Searchbar
+              placeholder="Filter by coyntry name"
+              style={styles.searchbar}
+              onChangeText={setNameFilter}
+              value={nameFilter}
+            />
+          </View>
+          <View style={styles.section}>
             <Text style={styles.title}>Filter by region</Text>
             <View style={styles.radioGroup}>
               {regionOptions.map(({ value, icon }, i) => (
@@ -106,17 +108,17 @@ const styles = StyleSheet.create({
     display: "flex",
     alignItems: "center",
     minHeight: 300,
+    padding: 20,
   },
   title: {
     fontSize: 22,
     marginVertical: 10,
   },
   searchbar: {
-    marginHorizontal: 20,
+    width: "100%",
     marginBottom: 10,
   },
-  regionContainer: {
-    marginHorizontal: 20,
+  section: {
     marginBottom: 10,
     backgroundColor: "transparent",
   },
