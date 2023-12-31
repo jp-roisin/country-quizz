@@ -1,12 +1,13 @@
 import { useMemo } from "react";
 import { View, Text } from "./Themed";
 import {
+  ImageSourcePropType,
   Button as NativeButton,
   StyleSheet,
-  useColorScheme,
 } from "react-native";
-import { Searchbar, RadioButton } from "react-native-paper";
-import { Region, RegionOrWorldwide, regions } from "../services/countries";
+import { Searchbar } from "react-native-paper";
+import { RegionOrWorldwide, regions } from "../services/countries";
+import RegionChip from "./RegionChip";
 
 type FiltersProps = {
   areFiltersOpen: boolean;
@@ -25,13 +26,30 @@ const Filters = ({
   regionFilter,
   setRegionFilter,
 }: FiltersProps) => {
-  const colorScheme = useColorScheme();
-  const regionOptions: { label: string; value: RegionOrWorldwide }[] = useMemo(
+  const regionIcons: Record<RegionOrWorldwide, ImageSourcePropType> = {
+    Asia: require("../assets/images/asia.png"),
+    Africa: require("../assets/images/africa.png"),
+    Americas: require("../assets/images/americas.png"),
+    Europe: require("../assets/images/europe.png"),
+    Oceania: require("../assets/images/oceania.png"),
+    WORLDWIDE: require("../assets/images/worldwide.png"),
+  };
+
+  const regionOptions: {
+    value: RegionOrWorldwide;
+    icon: ImageSourcePropType;
+  }[] = useMemo(
     () => [
-      { label: "Worldwide", value: "WORLDWIDE" as RegionOrWorldwide },
-      ...regions.map((r) => ({ label: r, value: r })),
+      {
+        value: "WORLDWIDE" as RegionOrWorldwide,
+        icon: regionIcons["WORLDWIDE"],
+      },
+      ...regions.map((r) => ({
+        value: r,
+        icon: regionIcons[r],
+      })),
     ],
-    [regions],
+    [regions, regionIcons],
   );
 
   return (
@@ -51,26 +69,22 @@ const Filters = ({
             onChangeText={setNameFilter}
             value={nameFilter}
           />
-          <RadioButton.Group
-            onValueChange={(newValue) =>
-              setRegionFilter(newValue as RegionOrWorldwide)
-            }
-            value={regionFilter}
-          >
+          <View style={styles.regionContainer}>
+            <Text style={styles.title}>Filter by region</Text>
             <View style={styles.radioGroup}>
-              {regionOptions.map(({ label, value }, i) => (
-                <RadioButton.Item
+              {regionOptions.map(({ value, icon }, i) => (
+                <RegionChip
                   key={i}
-                  label={label}
                   value={value}
-                  labelStyle={{
-                    ...styles.radioItem,
-                    color: colorScheme === "light" ? "#000" : "#fff",
-                  }}
+                  isChecked={regionFilter === value}
+                  onSelect={(value) =>
+                    setRegionFilter(value as RegionOrWorldwide)
+                  }
+                  icon={icon}
                 />
               ))}
             </View>
-          </RadioButton.Group>
+          </View>
         </View>
       )}
     </View>
@@ -101,21 +115,17 @@ const styles = StyleSheet.create({
     marginHorizontal: 20,
     marginBottom: 10,
   },
-  radioGroup: {
+  regionContainer: {
     marginHorizontal: 20,
+    marginBottom: 10,
+    backgroundColor: "transparent",
+  },
+  radioGroup: {
     display: "flex",
     flexDirection: "row",
     flexWrap: "wrap",
-    alignItems: "center",
-    justifyContent: "space-between",
+    justifyContent: "space-evenly",
     backgroundColor: "transparent",
-  },
-  radioItem: {
-    flexBasis: "30%",
-    flexShrink: 1,
-    flexGrow: 1,
-    display: "flex",
-    flexDirection: "row",
   },
 });
 
