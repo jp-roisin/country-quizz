@@ -2,11 +2,19 @@ import { StatusBar } from "expo-status-bar";
 import { Platform, StyleSheet } from "react-native";
 
 import { Text, View } from "../components/Themed";
+import { useRouter } from "expo-router";
+
+type Params = {
+  cca2: string;
+};
 
 const ModalScreen = () => {
+  const route = useRouter();
+  console.log({ route });
+
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Modal</Text>
+      <Text style={styles.title}>{`Modal`}</Text>
       <View
         style={styles.separator}
         lightColor="#eee"

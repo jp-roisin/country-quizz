@@ -5,11 +5,13 @@ import { Text, View } from "../../components/Themed";
 import { useQuery } from "@tanstack/react-query";
 import { getCountryList, RegionOrWorldwide } from "../../services/countries";
 import Filters from "../../components/Filters";
+import { Link } from "../../components/Link";
 
 const screenWidth = Dimensions.get("window").width;
 
 type RenderItemProps = {
   png: string;
+  cca2: string;
 };
 
 const Index = () => {
@@ -42,11 +44,15 @@ const Index = () => {
     [data, nameFilter, regionFilter],
   );
 
-  const renderItem = ({ png }: RenderItemProps) => (
-    <View style={styles.card}>
-      <Image source={{ uri: png }} style={styles.image} />
-    </View>
-  );
+  const renderItem = ({ png, cca2 }: RenderItemProps) => {
+    return (
+      <Link to="modal" params={{ cca2 }}>
+        <View style={styles.card}>
+          <Image source={{ uri: png }} style={styles.image} />
+        </View>
+      </Link>
+    );
+  };
 
   return (
     <View
@@ -68,7 +74,9 @@ const Index = () => {
         <FlatList
           data={countryList}
           keyExtractor={(item) => item.cca2}
-          renderItem={({ item }) => renderItem({ png: item.flags.png })}
+          renderItem={({ item }) =>
+            renderItem({ png: item.flags.png, cca2: item.cca2 })
+          }
           numColumns={3}
           style={styles.list}
         />
